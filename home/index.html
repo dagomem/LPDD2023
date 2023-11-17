@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La palabra del día</title>
+    <style>
+		h1 {
+			text-align: center;
+		}
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .tabla {
+            display: inline;
+            grid-template-columns: repeat(5, 50px);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .fila {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .casilla {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            border: 1px solid #ccc;
+            margin-right: 5px;
+        }
+        .input {
+            width: 150px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>La palabra del día</h1>
+    
+    <div class="tabla" id="tabla"></div>
+    <div>
+        <input type="text" class="input" id="inputRespuesta" maxlength="5" placeholder="Introduce tu palabra">
+        <button onclick="comprobarRespuesta()">Intentar</button>
+    </div>
+
+    <script>
+        const palabraSecreta = "negar";
+        
+        const tabla = document.getElementById('tabla');
+        let intentoActual = 0;
+
+        for (let i = 0; i < 6; i++) {
+            const fila = document.createElement('div');
+            fila.classList.add('fila');
+            
+            for (let j = 0; j < 5; j++) {
+                const casilla = document.createElement('div');
+                casilla.classList.add('casilla');
+                fila.appendChild(casilla);
+            }
+
+            tabla.appendChild(fila);
+        }
+
+        function comprobarRespuesta() {
+            const inputRespuesta = document.getElementById('inputRespuesta');
+            const respuesta = inputRespuesta.value.toLowerCase();
+            
+            if (respuesta.length !== 5) {
+                alert('Por favor, introduce una palabra de 5 letras.');
+                return;
+            }
+
+            const fila = tabla.children[intentoActual];
+            const casillas = fila.children;
+            for (let i = 0; i < 5; i++) {
+                const letra = respuesta[i];
+                const letraCorrecta = palabraSecreta[i];
+
+                if (letra === letraCorrecta) {
+                    casillas[i].style.backgroundColor = 'green';
+                } else {
+					if (palabraSecreta.includes(letra)) {
+						casillas[i].style.backgroundColor = 'yellow';
+					} else {
+						casillas[i].style.backgroundColor = 'gray';
+					}
+				}
+            }
+
+            intentoActual++;
+
+            if (acabar || intentoActual === 6) {
+                finDelJuego();
+            }
+        }
+
+        function finDelJuego() {
+            const inputRespuesta = document.getElementById('inputRespuesta');
+            inputRespuesta.disabled = true;
+			alert('Has perdido. La palabra correcta era: ' + palabraSecreta);
+        }
+    </script>
+
+</body>
+</html>
