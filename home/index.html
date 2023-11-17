@@ -51,7 +51,7 @@
     </div>
 
     <script>
-        const palabraSecreta = "negar";
+        const palabraSecreta = "NEGAR";
         
         const tabla = document.getElementById('tabla');
         let intentoActual = 0;
@@ -71,8 +71,9 @@
 
         function comprobarRespuesta() {
             const inputRespuesta = document.getElementById('inputRespuesta');
-            const respuesta = inputRespuesta.value.toLowerCase();
-            
+            const respuesta = inputRespuesta.value.toUpperCase()
+                .replaceAll('Á','A').replaceAll('É','E').replaceAll('Í','I').replaceAll('Ó','O').replaceAll('Ú','U')
+                .replaceAll('á','A').replaceAll('é','E').replaceAll('í','I').replaceAll('ó','O').replaceAll('ú','U');
             if (respuesta.length !== 5) {
                 alert('Por favor, introduce una palabra de 5 letras.');
                 return;
@@ -97,7 +98,7 @@
 
             intentoActual++;
 
-            if (acabar || intentoActual === 6) {
+            if (intentoActual === 6) {
                 finDelJuego();
             }
         }
