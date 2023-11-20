@@ -10,6 +10,9 @@
 		}
         body {
             font-family: Arial, sans-serif;
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%);
         }
         .tabla {
             display: inline;
@@ -46,13 +49,11 @@
 <body>
 
     <h1>La palabra del día</h1>
-    
-    <div class="tabla" id="tabla"></div>
-    <div>
-        <input type="text" class="input" id="inputRespuesta" maxlength="5" placeholder="Introduce tu palabra">
-        <button onclick="comprobarRespuesta()">Intentar</button>
-    </div>
-
+        <div class="tabla" id="tabla"></div>
+        <div>
+            <input type="text" class="input" id="inputRespuesta" maxlength="5" placeholder="Introduce una palabra">
+            <button onclick="comprobarRespuesta()">Intentar</button>
+        </div>
     <script>
         const palabraSecreta = "NEGAR";
         
@@ -104,6 +105,7 @@
             if (intentoActual === 6) {
                 finDelJuego();
             }
+            inputRespuesta.value = "";
         }
 
         function finDelJuego() {
