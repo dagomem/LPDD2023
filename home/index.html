@@ -29,6 +29,9 @@
             line-height: 50px;
             border: 1px solid #ccc;
             margin-right: 5px;
+            font-family: Arial, sans-serif;
+            color: white;
+            font-weight: bold;
         }
         .input {
             width: 150px;
@@ -84,14 +87,14 @@
             for (let i = 0; i < 5; i++) {
                 const letra = respuesta[i];
                 const letraCorrecta = palabraSecreta[i];
-
+                casillas[i].textContent = respuesta[i];
                 if (letra === letraCorrecta) {
-                    casillas[i].style.backgroundColor = 'green';
+                    casillas[i].style.backgroundColor = '#43A047';
                 } else {
 					if (palabraSecreta.includes(letra)) {
-						casillas[i].style.backgroundColor = 'yellow';
+						casillas[i].style.backgroundColor = '#E4A81D';
 					} else {
-						casillas[i].style.backgroundColor = 'gray';
+						casillas[i].style.backgroundColor = '#757575';
 					}
 				}
             }
