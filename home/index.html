@@ -88,7 +88,7 @@
             for (let i = 0; i < 5; i++) {
                 const letra = respuesta[i];
                 const letraCorrecta = palabraSecreta[i];
-                casillas[i].textContent = respuesta[i];
+                casillas[i].textContent = letra;
                 if (letra === letraCorrecta) {
                     casillas[i].style.backgroundColor = '#43A047';
                 } else {
@@ -102,16 +102,20 @@
 
             intentoActual++;
 
+            if (palabraSecreta === respuesta) {
+                finDelJuego(true);
+            }
             if (intentoActual === 6) {
-                finDelJuego();
+                finDelJuego(false);
             }
             inputRespuesta.value = "";
         }
 
-        function finDelJuego() {
+        function finDelJuego(b) {
             const inputRespuesta = document.getElementById('inputRespuesta');
             inputRespuesta.disabled = true;
-			alert('Has perdido. La palabra correcta era: ' + palabraSecreta);
+			if (b) alert('¡¡¡Has ganado!!!');
+            else alert('Has perdido. La palabra correcta era: ' + palabraSecreta);
         }
     </script>
 
