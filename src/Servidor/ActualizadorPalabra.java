@@ -16,18 +16,26 @@ public class ActualizadorPalabra extends TimerTask {
     }
 
     private void actualizar(){
-        try (DataInputStream dis = new DataInputStream(new FileInputStream(new File(Servidor.HOMEDIR, "spanishFiltrado.txt")))){
-            String linea;
-            int nLineas = 0;
-            while ((linea = dis.readLine()) != null && !linea.isBlank()) nLineas++;
-            dis.reset();
+        String linea = "";
+        int nLineas = 0;
+        try (BufferedReader br = new BufferedReader(new FileReader(new File(Servidor.HOMEDIR, "spanishFiltrado.txt")))){
+            while ((linea = br.readLine()) != null && !linea.isBlank()) nLineas++;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(new File(Servidor.HOMEDIR, "spanishFiltrado.txt")))){
             Random random = new Random();
             Calendar hoy = Calendar.getInstance();
-
+            hoy.set(Calendar.HOUR_OF_DAY,0);
+            hoy.set(Calendar.MINUTE,0);
+            hoy.set(Calendar.SECOND,0);
+            hoy.set(Calendar.MILLISECOND,0);
             random.setSeed(hoy.getTime().getTime());
             int lineaALeer = random.nextInt(0,nLineas);
             for (int i = 0; i <= lineaALeer; i++){
-                linea = dis.readLine();
+                linea = br.readLine();
             }
             Palabra.setPalabra(linea);
         } catch (FileNotFoundException e) {
