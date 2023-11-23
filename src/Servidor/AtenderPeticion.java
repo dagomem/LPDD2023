@@ -1,3 +1,5 @@
+package Servidor;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -14,7 +16,6 @@ import java.util.Date;
 
 public class AtenderPeticion implements Runnable {
 
-    private String HOMEDIR = "home";
     private Socket s;
 
     public AtenderPeticion(Socket s) {
@@ -89,7 +90,7 @@ public class AtenderPeticion implements Runnable {
                 fileName += "index.html";
             }
         }
-        return new File(HOMEDIR, fileName);
+        return new File(Servidor.HOMEDIR, fileName);
     }
     private void sendMIMEHeading(OutputStream os, int code, String cType, long fSize) {
         sendMIMEHeading(os, code, cType, fSize, 0, 0);

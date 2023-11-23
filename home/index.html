@@ -56,15 +56,16 @@
         </div>
     <script>
         const palabraSecreta = "COSAS";
-        
+        const maxIntentos = 6;
+        const maxLetras = 5;
         const tabla = document.getElementById('tabla');
         let intentoActual = 0;
 
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < maxIntentos; i++) {
             const fila = document.createElement('div');
             fila.classList.add('fila');
             
-            for (let j = 0; j < 5; j++) {
+            for (let j = 0; j < maxLetras; j++) {
                 const casilla = document.createElement('div');
                 casilla.classList.add('casilla');
                 fila.appendChild(casilla);
@@ -78,15 +79,16 @@
             const respuesta = inputRespuesta.value.toUpperCase()
                 .replaceAll('Á','A').replaceAll('É','E').replaceAll('Í','I').replaceAll('Ó','O').replaceAll('Ú','U')
                 .replaceAll('á','A').replaceAll('é','E').replaceAll('í','I').replaceAll('ó','O').replaceAll('ú','U');
-            if (respuesta.length !== 5) {
+            if (respuesta.length !== maxLetras) {
                 alert('Por favor, introduce una palabra de 5 letras.');
+                inputRespuesta.focus();
                 return;
             }
 
             const fila = tabla.children[intentoActual];
             const casillas = fila.children;
             let palabraAux = palabraSecreta;
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < maxLetras; i++) {
                 const letra = respuesta[i];
                 const letraCorrecta = palabraSecreta[i];
                 casillas[i].textContent = letra;
@@ -95,7 +97,7 @@
                     casillas[i].style.backgroundColor = '#43A047';
                 }
             }
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < maxLetras; i++) {
                 const letra = respuesta[i];
                 const letraCorrecta = palabraSecreta[i];
                 casillas[i].textContent = letra;
@@ -112,8 +114,7 @@
             setTimeout(function () {
                 if (palabraSecreta === respuesta) {
                     finDelJuego(true);
-                }
-                if (intentoActual === 6) {
+                } else if (intentoActual === maxIntentos) {
                     finDelJuego(false);
                 }
                 inputRespuesta.value = "";
