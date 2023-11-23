@@ -55,7 +55,7 @@
             <button onclick="comprobarRespuesta()">Intentar</button>
         </div>
     <script>
-        const palabraSecreta = "NEGAR";
+        const palabraSecreta = "COSAS";
         
         const tabla = document.getElementById('tabla');
         let intentoActual = 0;
@@ -90,28 +90,36 @@
                 const letra = respuesta[i];
                 const letraCorrecta = palabraSecreta[i];
                 casillas[i].textContent = letra;
-                if (letra === letraCorrecta && palabraAux.includes(letra)) {
+                if (letra === letraCorrecta) {
                     palabraAux = palabraAux.replace(letra,'');
                     casillas[i].style.backgroundColor = '#43A047';
+                }
+            }
+            for (let i = 0; i < 5; i++) {
+                const letra = respuesta[i];
+                const letraCorrecta = palabraSecreta[i];
+                casillas[i].textContent = letra;
+                if (letra !== letraCorrecta)
+                if (palabraAux.includes(letra)) {
+                    palabraAux = palabraAux.replace(letra,'');
+                    casillas[i].style.backgroundColor = '#E4A81D';
                 } else {
-					if (palabraAux.includes(letra)) {
-                        palabraAux = palabraAux.replace(letra,'');
-						casillas[i].style.backgroundColor = '#E4A81D';
-					} else {
-						casillas[i].style.backgroundColor = '#757575';
-					}
-				}
+                    casillas[i].style.backgroundColor = '#757575';
+                }
             }
 
             intentoActual++;
-
-            if (palabraSecreta === respuesta) {
-                finDelJuego(true);
-            }
-            if (intentoActual === 6) {
-                finDelJuego(false);
-            }
+            setTimeout(function () {
+                if (palabraSecreta === respuesta) {
+                    finDelJuego(true);
+                }
+                if (intentoActual === 6) {
+                    finDelJuego(false);
+                }
+                inputRespuesta.value = "";
+            }, 50);
             inputRespuesta.value = "";
+            inputRespuesta.focus();
         }
 
         function finDelJuego(b) {
