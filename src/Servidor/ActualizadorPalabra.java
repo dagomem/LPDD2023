@@ -2,7 +2,6 @@ package Servidor;
 
 import java.io.*;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Random;
 import java.util.TimerTask;
 
@@ -32,12 +31,17 @@ public class ActualizadorPalabra extends TimerTask {
             hoy.set(Calendar.MINUTE,0);
             hoy.set(Calendar.SECOND,0);
             hoy.set(Calendar.MILLISECOND,0);
-            random.setSeed(hoy.getTime().getTime());
+            random.setSeed(hoy.getTimeInMillis());
             int lineaALeer = random.nextInt(0,nLineas);
             for (int i = 0; i <= lineaALeer; i++){
                 linea = br.readLine();
             }
             Palabra.setPalabra(linea);
+            /*File f = new File(Servidor.HOMEDIR, "palabra.txt");
+            if (!f.exists()) f.createNewFile();
+            try (FileWriter fw = new FileWriter(f)){
+                fw.write(linea + " " + Calendar.getInstance().getTime());
+            }*/
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

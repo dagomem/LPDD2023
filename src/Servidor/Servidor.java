@@ -7,16 +7,15 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 public class Servidor {
-
     public final static String HOMEDIR = "home";
-
+    private static Timer actualizacionPalabra;
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         configurarActualizacionPalabra();
+        System.out.println(Palabra.getPalabra());
         ExecutorService pool = Executors.newCachedThreadPool();
-        try (ServerSocket ss = new ServerSocket(8080);){
+        try (ServerSocket ss = new ServerSocket(8080)){
             while (true) {
                 Socket s = ss.accept();
                 AtenderPeticion at = new AtenderPeticion(s);
@@ -31,13 +30,14 @@ public class Servidor {
     }
 
     private static void configurarActualizacionPalabra() {
-        Timer t = new Timer();
         Calendar manyana = Calendar.getInstance();
         manyana.add(Calendar.DAY_OF_MONTH,1);
-        manyana.set(Calendar.MILLISECOND,1);
+        manyana.set(Calendar.HOUR_OF_DAY,0);
+        manyana.set(Calendar.MINUTE,0);
         manyana.set(Calendar.SECOND,0);
-        manyana.set(Calendar.HOUR,0);
-        t.scheduleAtFixedRate(new ActualizadorPalabra(),manyana.getTime(),24*60*60*1000);
+        manyana.set(Calendar.MILLISECOND,0);
+        actualizacionPalabra = new Timer();
+        actualizacionPalabra.scheduleAtFixedRate(new ActualizadorPalabra(),manyana.getTimeInMillis() - Calendar.getInstance().getTimeInMillis(),24*60*60*1000);
     }
 
 }
