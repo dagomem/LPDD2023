@@ -29,24 +29,24 @@ public class AtenderPeticion implements Runnable {
              DataOutputStream dos = new DataOutputStream(s.getOutputStream())) {
             String peticion = br.readLine();
             if (peticion.startsWith("GET")) {
-                File f = buscaFichero(peticion);
-                if (f.exists()) {
-                    String linea;
-                    boolean range = false;
-                    while ((linea = br.readLine()) != null && !linea.isEmpty()) if (linea.startsWith("Range")) range = true;
-                    if (range) {
-
-                    } else {sendMIMEHeading(dos, 200, URLConnection.guessContentTypeFromName(f.getName()), f.length());
-                        try (FileInputStream fis = new FileInputStream(f)){
+                if (peticion.startsWith("GET /palabrasecreta")) {
+                    String palabra = Palabra.getPalabra();
+                    sendMIMEHeading(dos, 200, "text/plain", palabra.getBytes().length);
+                    dos.write(palabra.getBytes());
+                } else {
+                    File f = buscaFichero(peticion);
+                    if (f.exists()) {
+                        sendMIMEHeading(dos, 200, URLConnection.guessContentTypeFromName(f.getName()), f.length());
+                        try (FileInputStream fis = new FileInputStream(f)) {
                             dos.write(fis.readAllBytes());
                         }
+                    } else {
+                        String error = makeHTMLErrorText(404, "File Not Found");
+                        sendMIMEHeading(dos, 404, peticion, error.getBytes().length);
+                        dos.write(error.getBytes());
                     }
-                } else {
-                    String error = makeHTMLErrorText(404, "File Not Found");
-                    sendMIMEHeading(dos, 404, peticion, error.getBytes().length);
-                    dos.write(error.getBytes());
                 }
-            } else if(peticion.startsWith("HEAD")) {
+            } else if (peticion.startsWith("HEAD")) {
                 File f = buscaFichero(peticion);
                 if (f.exists()) {
                     sendMIMEHeading(dos, 200, URLConnection.guessContentTypeFromName(f.getName()), f.length());
@@ -92,9 +92,11 @@ public class AtenderPeticion implements Runnable {
         }
         return new File(Servidor.HOMEDIR, fileName);
     }
+
     private void sendMIMEHeading(OutputStream os, int code, String cType, long fSize) {
         sendMIMEHeading(os, code, cType, fSize, 0, 0);
     }
+
     private void sendMIMEHeading(OutputStream os, int code, String cType, long fSize, int bInicial, int bFinal) {
         PrintStream dos = new PrintStream(os);
         dos.print("HTTP/1.1 " + code + " ");

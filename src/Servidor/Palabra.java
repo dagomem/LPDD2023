@@ -1,5 +1,4 @@
 package Servidor;
-
 public class Palabra {
     private static String palabra;
     public static String getPalabra(){

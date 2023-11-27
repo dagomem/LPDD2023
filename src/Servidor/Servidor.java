@@ -1,6 +1,7 @@
 package Servidor;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Calendar;
@@ -13,9 +14,9 @@ public class Servidor {
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         configurarActualizacionPalabra();
-        System.out.println(Palabra.getPalabra());
         ExecutorService pool = Executors.newCachedThreadPool();
         try (ServerSocket ss = new ServerSocket(8080)){
+            modificarIndex(ss);
             while (true) {
                 Socket s = ss.accept();
                 AtenderPeticion at = new AtenderPeticion(s);
@@ -27,6 +28,21 @@ public class Servidor {
         } finally {
             pool.shutdown();
         }
+    }
+
+    private static void modificarIndex(ServerSocket ss) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(new File(HOMEDIR, "indexPlantilla.html")));
+        DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File(HOMEDIR, "index.html")));
+        String linea = "";
+        StringBuilder nuevo = new StringBuilder();
+        while ((linea = br.readLine()) != null) {
+            nuevo.append(linea.replace("DIRECCION", InetAddress.getLocalHost().getHostAddress()).replace("PUERTO",String.valueOf(ss.getLocalPort())));
+            nuevo.append("\n");
+        }
+        dos.write(nuevo.toString().getBytes());
+        dos.flush();
+        dos.close();
+        br.close();
     }
 
     private static void configurarActualizacionPalabra() {
