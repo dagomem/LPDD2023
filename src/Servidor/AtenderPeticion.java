@@ -38,7 +38,11 @@ public class AtenderPeticion implements Runnable {
                     if (f.exists()) {
                         sendMIMEHeading(dos, 200, URLConnection.guessContentTypeFromName(f.getName()), f.length());
                         try (FileInputStream fis = new FileInputStream(f)) {
-                            dos.write(fis.readAllBytes());
+                        	byte [] buffer = new byte[1024];
+                        	int leidos;
+                        	while ((leidos = fis.read(buffer, 0, 1024))!= -1) {
+                        		dos.write(buffer);
+                        	}
                         }
                     } else {
                         String error = makeHTMLErrorText(404, "File Not Found");

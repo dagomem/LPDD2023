@@ -141,11 +141,11 @@
         var xmlHttp = new XMLHttpRequest();
         var s;
         try {
-            xmlHttp.open("GET", "http://DIRECCION:PUERTO/palabrasecreta", false);
+            xmlHttp.open("GET", "http://192.168.1.133:8080/palabrasecreta", false);
             xmlHttp.send(null);
             s = xmlHttp.responseText;
         } catch (e) {
-            xmlHttp.open( "GET", "http://localhost:PUERTO/palabrasecreta", false );
+            xmlHttp.open( "GET", "http://localhost:8080/palabrasecreta", false );
             xmlHttp.send( null );
             s = xmlHttp.responseText;
         }

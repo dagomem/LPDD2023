@@ -5,9 +5,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LPDD_GUI extends JFrame implements ActionListener {
+public class LPDD_GUI extends JFrame {
     private LPDD lpdd;
     private JTextField inputRespuesta;
+    private JButton botonIntentar;
     private JPanel tabla;
 
     public LPDD_GUI(LPDD lpdd) {
@@ -16,10 +17,6 @@ public class LPDD_GUI extends JFrame implements ActionListener {
 
     public void iniciar(){
         this.initializeComponent();
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        comprobarRespuesta();
     }
 
     private void initializeComponent() {
@@ -45,8 +42,24 @@ public class LPDD_GUI extends JFrame implements ActionListener {
             tabla.add(fila);
         }
         inputRespuesta = new JTextField(15);
-        JButton botonIntentar = new JButton("Intentar");
-        botonIntentar.addActionListener(this);
+        botonIntentar = new JButton("Intentar");
+        botonIntentar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	if (botonIntentar.getText().equals("Intentar")) {
+            		comprobarRespuesta();
+            	}
+            	else {
+	                String url = "https://dle.rae.es/" + lpdd.getPalabraSecreta();
+	                try {
+	                    Desktop.getDesktop().browse(new java.net.URI(url));
+	                } catch (Exception ex) {
+	                    ex.printStackTrace();
+	                }
+                }
+            }
+        });
+
         JPanel panelRespuesta = new JPanel();
         panelRespuesta.add(inputRespuesta);
         panelRespuesta.add(botonIntentar);
@@ -87,6 +100,7 @@ public class LPDD_GUI extends JFrame implements ActionListener {
         } else {
             JOptionPane.showMessageDialog(this, "Has perdido. La palabra correcta era: " + lpdd.getPalabraSecreta());
         }
+        botonIntentar.setText(lpdd.getPalabraSecreta());
     }
 
 }

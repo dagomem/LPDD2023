@@ -18,7 +18,7 @@ public class ActualizadorPalabra extends TimerTask {
         String linea = "";
         int nLineas = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(new File(Servidor.HOMEDIR, "spanishFiltrado.txt")))){
-            while ((linea = br.readLine()) != null && !linea.isBlank()) nLineas++;
+            while ((linea = br.readLine()) != null && !linea.equals("")) nLineas++;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -32,7 +32,7 @@ public class ActualizadorPalabra extends TimerTask {
             hoy.set(Calendar.SECOND,0);
             hoy.set(Calendar.MILLISECOND,0);
             random.setSeed(hoy.getTimeInMillis());
-            int lineaALeer = random.nextInt(0,nLineas);
+            int lineaALeer = random.nextInt(nLineas);
             for (int i = 0; i <= lineaALeer; i++){
                 linea = br.readLine();
             }
