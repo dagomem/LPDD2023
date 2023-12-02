@@ -1,1 +1,3 @@
 # LPDD2023
+Recreación del juego "La palabra del día", que consiste en adivinar en 6 intentos una palabra de 5 letras que cambia diariamente (la palabra es la misma para todo el mundo). En cada intento el juego pinta cada letra de un color indicando si esa letra se encuentra o no en la palabra y si se encuentra en la posición correcta. Una vez terminado el juego, se puede hacer click en el botón con la palabra para ver su significado.
+Para jugar, ejecutar la clase Servidor (en el paquete Servidor) y después meterse en http://localhost:8080/ si deseas usar el cliente programado en JavaScript o ejecutar la clase Main (en el paquete Cliente) si deseas usar el cliente programado en Java.
